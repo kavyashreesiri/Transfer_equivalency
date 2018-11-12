@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:dmd="http://www.digitalmeasures.com/schema/data-metadata">
+    <xsl:output method="html" encoding="ISO-8859-1" indent="yes" omit-xml-declaration="yes"  media-type="text/html"/>
+    <xsl:param name="theme"/>
+    <xsl:template match="/">
+ 
+        <xsl:apply-templates/>
+
+    </xsl:template>
+    <xsl:template match="//Record">
+    <xsl:if test="normalize-space(GEN_FACULTY_EXPERTISE) or normalize-space(INTELLCONT) or normalize-space(PRESENT) or normalize-space(PERFORM_EXHIBIT) or normalize-space(AWARDHONOR) or normalize-space(CONGRANT) or normalize-space(INTELLPROP)">
+        <section>
+            <xsl:attribute name="class">grid-16 alpha tabs tab-theme-1 defaultOduBlue</xsl:attribute>
+            <xsl:attribute name="id">profiletab</xsl:attribute>
+            <header>
+                <nav>
+                    <ul class="tab-nav">
+                        <xsl:if test="normalize-space(GEN_FACULTY_EXPERTISE)">
+                                <li  class="first active">
+                                        <a class="content" href="#">Expertise</a>
+                                </li>
+                        </xsl:if>
+                        <xsl:if test="normalize-space(INTELLCONT) or normalize-space(PRESENT) or normalize-space(PERFORM_EXHIBIT)">
+                            <xsl:if test="INTELLCONT/DISPLAY_FLAG = 'Yes' or PRESENT/DISPLAY_FLAG = 'Yes' or PERFORM_EXHIBIT/DISPLAY_FLAG = 'Yes'">
+								<xsl:if test="INTELLCONT/CONTYPE ='Book' or INTELLCONT/CONTYPE ='Book Chapter' or  INTELLCONT/CONTYPE ='Textbook' or INTELLCONT/CONTYPE[contains(.,'Article') or contains(.,'Conference Proce')]  or PRESENT/DISPLAY_FLAG = 'Yes'">
+								
+									<xsl:choose>
+											<xsl:when test="normalize-space(GEN_FACULTY_EXPERTISE)">
+													<li class="content">
+															<a class="content" href="#">Select Publications</a>
+													</li>
+											</xsl:when>
+											<xsl:otherwise>
+													<li  class="first active">
+															<a class="content" href="#">Select Publications</a>
+													</li>
+											</xsl:otherwise>
+									</xsl:choose>
+								</xsl:if>  
+							</xsl:if>
+                        </xsl:if>                       
+                        <xsl:if test="normalize-space(AWARDHONOR)">
+                            <xsl:if test="AWARDHONOR/DISPLAY_FLAG = 'Yes'">
+                                <xsl:choose>
+                                        <xsl:when test="normalize-space(GEN_FACULTY_EXPERTISE) or INTELLCONT/DISPLAY_FLAG = 'Yes' or PRESENT/DISPLAY_FLAG = 'Yes' or PERFORM_EXHIBIT/DISPLAY_FLAG = 'Yes'">
+                                                <li class="content">
+                                                        <a class="content" href="#">Honors</a>
+                                                </li>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                                <li  class="first active">
+                                                        <a class="content" href="#">Honors</a>
+                                                </li>
+                                        </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:if>                        
+                        </xsl:if>
+                        <xsl:if test="normalize-space(CONGRANT) or normalize-space(INTELLPROP)">
+							<xsl:if test="CONGRANT/DISPLAY_FLAG = 'Yes' or INTELLPROP/DISPLAY_FLAG = 'Yes'">
+								<xsl:if test="CONGRANT[STATUS = 'Funded' and DISPLAY_FLAG = 'Yes'] or (INTELLPROP/DISPLAY_FLAG = 'Yes') or normalize-space(CONGRANT/DTY_START)">
+									<xsl:choose>
+										<xsl:when test="normalize-space(GEN_FACULTY_EXPERTISE) or INTELLCONT/DISPLAY_FLAG = 'Yes' or PRESENT/DISPLAY_FLAG = 'Yes' or PERFORM_EXHIBIT/DISPLAY_FLAG = 'Yes' or AWARDHONOR/DISPLAY_FLAG = 'Yes'">
+												<li class="last">
+														<a class="content" href="#">Research</a>
+												</li>
+										</xsl:when>
+										<xsl:otherwise>
+												<li  class="first active">
+														<a class="content" href="#">Research</a>
+												</li>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:if>                         
+                            </xsl:if>                         
+                        </xsl:if>
+                    </ul>
+                </nav>
+            </header>
+            <div class="clearfix">
+				<xsl:if test="normalize-space(GEN_FACULTY_EXPERTISE)">
+					<div class="tab-content" style="display: Block;  zoom: 1">
+						<section class="grid-16 alpha">
+							<ul class="ul_in_tab">
+								<xsl:if test="normalize-space(GEN_FACULTY_EXPERTISE)">
+									<li class="fas_expertise">
+										<h2>Expertise</h2>
+										<dl>
+											<xsl:for-each select="GEN_FACULTY_EXPERTISE/EXPERTISE_AREA">
+												<dt>
+													<strong>
+														<xsl:value-of select="AREA"/>
+													</strong>
+												</dt>
+												<dd>
+													<xsl:value-of select=".//SPECIALTIES"/>
+												</dd>
+											</xsl:for-each>
+										</dl>
+									</li>
+								</xsl:if>
+                                                                <xsl:if test="normalize-space(PCI/RESEARCH_INTERESTS)">
+                                                                    <li class="fas_interests">
+                                                                        <h2>Research Interests</h2>
+                                                                        <dl>
+
+                                                                            <dd>
+                                                                                <xsl:value-of select="PCI/RESEARCH_INTERESTS"/>
+                                                                            </dd>
+                                                                        </dl>
+                                                                    </li>
+                                                                </xsl:if>
+							</ul>
+						</section>
+					</div>
+				</xsl:if>
+                <xsl:if test="INTELLCONT/DISPLAY_FLAG = 'Yes' or PRESENT/DISPLAY_FLAG = 'Yes' or PERFORM_EXHIBIT/DISPLAY_FLAG = 'Yes'">
+				<xsl:if test="INTELLCONT/CONTYPE = 'Book' or INTELLCONT/CONTYPE = 'Textbook' or INTELLCONT/CONTYPE ='Book Chapter'  or INTELLCONT/CONTYPE[contains(.,'Article') or contains(.,'Conference Proce')] or PRESENT/DISPLAY_FLAG = 'Yes'">
+					<xsl:choose>
+					<xsl:when test="normalize-space(GEN_FACULTY_EXPERTISE)">
+						<div class="tab-content" style="zoom: 1; display: none; ">
+							<section class="grid-16 alpha">
+							<ul class="ul_in_tab">
+								<li class="research">
+								</li>
+								<xsl:if test="INTELLCONT/CONTYPE[. = 'Book' or . = 'Textbook'] and INTELLCONT/DISPLAY_FLAG = 'Yes'">
+									<li>
+										<h2>Books</h2>                               
+										<dl>
+											<xsl:for-each select="INTELLCONT/CONTYPE[. = 'Textbook' or . = 'Book']">
+												<xsl:if test="../DISPLAY_FLAG = 'Yes'">
+													<dd>
+														<xsl:for-each select="../INTELLCONT_AUTH">
+															<xsl:value-of select="normalize-space(LNAME)"/>                                                        
+															<xsl:if test = "normalize-space(FNAME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(FNAME, 1, 1))"/>.</xsl:if>                                                        
+															<xsl:if test = "normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(MNAME, 1,1))"/>.</xsl:if>
+															<xsl:choose>
+																<xsl:when test="position() = last()-1">, and<xsl:value-of select="' '"/></xsl:when>
+																<xsl:otherwise><xsl:if test="position() != last ()">,</xsl:if><xsl:value-of select="' '"/></xsl:otherwise>
+															</xsl:choose>                                                       
+														</xsl:for-each>
+														<xsl:if test = "normalize-space(../DTY_PUB)">(<xsl:value-of select="normalize-space(../DTY_PUB)"/>).</xsl:if>
+														<xsl:choose>
+																<xsl:when test="normalize-space(../TITLE)"><xsl:value-of select="' '"/><em><xsl:value-of select="normalize-space(../TITLE)"/></em>. </xsl:when>
+																<xsl:when test="normalize-space(../TITLE_SECONDARY)"><xsl:value-of select="' '"/><em><xsl:value-of select="normalize-space(../TITLE_SECONDARY)"/></em>.</xsl:when>
+														</xsl:choose>
+														<xsl:if test = "normalize-space(../PUBCTYST)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../PUBCTYST)"/>:</xsl:if>
+														<xsl:if test = "normalize-space(../PUBLISHER)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../PUBLISHER)"/>.</xsl:if>
+													</dd>
+												</xsl:if>
+											</xsl:for-each>
+										</dl>
+									</li>
+								</xsl:if>
+								<xsl:if test="INTELLCONT/CONTYPE[contains(.,'Book Chapter')] and INTELLCONT/DISPLAY_FLAG = 'Yes'">
+									<li>
+										<h2>Book Chapters</h2>                               
+										<dl>
+											<xsl:for-each select="INTELLCONT/CONTYPE[contains(.,'Book Chapter')]">
+												<xsl:if test="../DISPLAY_FLAG = 'Yes'">
+													<dd>
+														<xsl:for-each select="../INTELLCONT_AUTH">
+															<xsl:value-of select="normalize-space(LNAME)"/>                                                        
+															<xsl:if test = "normalize-space(FNAME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(FNAME, 1, 1))"/>.</xsl:if>                                                        
+															<xsl:if test = "normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(MNAME, 1,1))"/>.</xsl:if>
+															<xsl:choose>
+																<xsl:when test="position() = last()-1">, and<xsl:value-of select="' '"/></xsl:when>
+																<xsl:otherwise><xsl:if test="position() != last()">,</xsl:if><xsl:value-of select="' '"/></xsl:otherwise>
+															</xsl:choose>                                                       
+														</xsl:for-each>
+														<xsl:if test = "normalize-space(../DTY_PUB)"> (<xsl:value-of select="normalize-space(../DTY_PUB)"/>).</xsl:if>
+														<xsl:if test = "normalize-space(../TITLE)"><xsl:value-of select="' '"/><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../TITLE)"/>.</xsl:if>
+														<xsl:if test = "normalize-space(../TITLE_SECONDARY)"> <em><xsl:value-of select="normalize-space(../TITLE_SECONDARY)"/></em></xsl:if>
+														<xsl:if test = "normalize-space(../PAGENUM)"> (pp. <xsl:value-of select="normalize-space(../PAGENUM)"/>)</xsl:if> 
+														<xsl:if test = "normalize-space(../PUBCTYST)">. <xsl:value-of select="normalize-space(../PUBCTYST)"/>:</xsl:if>
+														<xsl:if test = "normalize-space(../PUBLISHER)"><xsl:if test = "not(normalize-space(../PUBCTYST))">.</xsl:if><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../PUBLISHER)"/>.</xsl:if>
+													</dd>
+											   </xsl:if>
+											</xsl:for-each>
+										</dl>
+									</li>
+								</xsl:if>
+								<xsl:if test="INTELLCONT/CONTYPE[contains(.,'Journal Article')] and INTELLCONT/DISPLAY_FLAG = 'Yes'">
+									<li>
+										<h2>Articles</h2>
+										<dl>
+											<xsl:for-each select="INTELLCONT/CONTYPE[contains(.,'Journal Article')]">
+												<xsl:if test="../DISPLAY_FLAG = 'Yes'">
+													<dd>
+														<xsl:for-each select="../INTELLCONT_AUTH">
+															<xsl:value-of select="normalize-space(LNAME)"/>
+															<xsl:if test = "normalize-space(FNAME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(FNAME, 1, 1))"/>.</xsl:if>
+															<xsl:if test = "normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(MNAME, 1,1))"/>.</xsl:if>
+															<xsl:choose>
+																<xsl:when test="position() = last()-1">, and<xsl:value-of select="' '"/></xsl:when>
+																<xsl:otherwise><xsl:if test="position() != last ()">,</xsl:if><xsl:value-of select="' '"/></xsl:otherwise>
+															</xsl:choose> 
+														</xsl:for-each>  
+														<xsl:if test = "normalize-space(../DTY_PUB)"> (<xsl:value-of select="normalize-space(../DTY_PUB)"/>).</xsl:if>
+														<xsl:if test = "normalize-space(../TITLE)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../TITLE)"/>.</xsl:if>                                                 
+														<xsl:if test = "normalize-space(../PUBLISHER)"><xsl:value-of select="' '"/><em><xsl:value-of select="normalize-space(../PUBLISHER)"/></em></xsl:if>                                                     
+														<xsl:if test = "normalize-space(../VOLUME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../VOLUME)"/><xsl:if test = "not(normalize-space(../ISSUE))">,</xsl:if></xsl:if> 
+														<xsl:if test = "normalize-space(../ISSUE)"> (<xsl:value-of select="normalize-space(../ISSUE)"/>),</xsl:if>
+														<xsl:if test = "normalize-space(../PAGENUM)"> (pp. <xsl:value-of select="normalize-space(../PAGENUM)"/>).</xsl:if>
+													</dd>
+												</xsl:if>
+											</xsl:for-each>
+										</dl>
+									</li>
+								</xsl:if>
+								<xsl:if test="INTELLCONT/CONTYPE[contains(.,'Conference Proce')] and INTELLCONT/DISPLAY_FLAG = 'Yes' and INTELLCONT/STATUS = 'Published'">
+									<li>
+										<h2>Conference Proceeding</h2>
+										<dl>
+											<xsl:for-each select="INTELLCONT/CONTYPE[contains(.,'Conference Proce')]">
+												<xsl:if test="../DISPLAY_FLAG = 'Yes' and ../STATUS = 'Published'">
+													<dd>
+														<xsl:for-each select="../INTELLCONT_AUTH">
+															<xsl:value-of select="normalize-space(LNAME)"/>
+															<xsl:if test = "normalize-space(FNAME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(FNAME, 1, 1))"/>.</xsl:if>
+															<xsl:if test = "normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(MNAME, 1,1))"/>.</xsl:if>
+															<xsl:choose>
+																<xsl:when test="position() = last()-1">, and<xsl:value-of select="' '"/></xsl:when>
+																<xsl:otherwise><xsl:if test="position() != last ()">,</xsl:if><xsl:value-of select="' '"/></xsl:otherwise>
+															</xsl:choose> 
+														</xsl:for-each>  
+														<xsl:if test = "normalize-space(../DTY_PUB)"> (<xsl:value-of select="normalize-space(../DTY_PUB)"/>).</xsl:if>
+														<xsl:if test = "normalize-space(../TITLE)"><xsl:value-of select="' '"/><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../TITLE)"/>.</xsl:if>
+														<xsl:if test = "normalize-space(../EDITORS)"><xsl:value-of select="' '"/><xsl:value-of select="'In '"/><xsl:value-of select="normalize-space(../EDITORS)"/> (Ed.)</xsl:if>
+														<xsl:if test = "normalize-space(../TITLE_SECONDARY)"> <xsl:value-of select="' ,'"/><em><xsl:value-of select="normalize-space(../TITLE_SECONDARY)"/></em></xsl:if>
+														<xsl:if test = "normalize-space(../PAGENUM)"> (pp. <xsl:value-of select="normalize-space(../PAGENUM)"/>)</xsl:if> 
+														<xsl:if test = "normalize-space(../PUBCTYST)">. <xsl:value-of select="normalize-space(../PUBCTYST)"/>:</xsl:if>
+														<xsl:if test = "normalize-space(../PUBLISHER)"><xsl:if test = "not(normalize-space(../PUBCTYST))">.</xsl:if><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../PUBLISHER)"/>.</xsl:if>
+														<xsl:if test = "normalize-space(../DOI)"><xsl:if test = "not(normalize-space(../PUBLISHER))">.</xsl:if><xsl:value-of select="' doi:'"/><xsl:value-of select="normalize-space(../DOI)"/></xsl:if>
+													</dd>
+												</xsl:if>
+											</xsl:for-each>
+										</dl>
+									</li>
+								</xsl:if>
+								<xsl:if test="PRESENT/DISPLAY_FLAG = 'Yes'">
+									<li class="fas_presentations">
+										<h2>Presentations</h2>
+                                                                                <dl>
+										<xsl:for-each select="PRESENT">
+											<xsl:if test="DISPLAY_FLAG = 'Yes'">
+                                                                                            <dd>
+												<xsl:for-each select="PRESENT_AUTH">
+														<xsl:value-of select="normalize-space(LNAME)"/>
+														<xsl:if test = "normalize-space(FNAME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(FNAME, 1, 1))"/>.</xsl:if>
+														<xsl:if test = "normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(MNAME, 1,1))"/>.</xsl:if>
+														<xsl:choose>
+															<xsl:when test="position() = last()-1">, and<xsl:value-of select="' '"/></xsl:when>
+															<xsl:otherwise><xsl:if test="position() != last ()">,</xsl:if><xsl:value-of select="' '"/></xsl:otherwise>
+														</xsl:choose> 
+												</xsl:for-each>
+												<xsl:if test = "normalize-space(DTY_DATE)"> (<xsl:if test="normalize-space(DTM_DATE)"><xsl:value-of select="DTM_DATE"/><xsl:if test="normalize-space(DTD_DATE)"><xsl:value-of select="' '"/><xsl:value-of select="DTD_DATE"/></xsl:if>,<xsl:value-of select="' '"/></xsl:if><xsl:value-of select="DTY_DATE"/>).</xsl:if>
+												<xsl:value-of select="' '"/>
+												<xsl:value-of select="TITLE"/> 
+												<xsl:if test = "normalize-space(NAME)">
+                                                                                                    <xsl:value-of select="' '"/>
+                                                                                                    <xsl:value-of select="PRESENTATION_TYPE"/> presented at
+                                                                                                    <xsl:value-of select="NAME"/>
+                                                                                                </xsl:if>
+												<xsl:if test="normalize-space(LOCATION)">
+													,<xsl:value-of select="' '"/>
+													<xsl:value-of select="LOCATION"/>
+												</xsl:if>.
+                                                                                            </dd>
+											</xsl:if>
+										</xsl:for-each>
+                                                                                </dl>
+									</li>
+								</xsl:if>
+								<xsl:if test="PERFORM_EXHIBIT/DISPLAY_FLAG = 'Yes'">
+										<li class="fas_perform">
+											<h2>Artistic and Professional Performances and Exhibits</h2>
+											<xsl:for-each select="PERFORM_EXHIBIT">
+												<xsl:if test="DISPLAY_FLAG = 'Yes'">
+													<dl>
+														<dt>
+															<strong>
+																<xsl:value-of select="TITLE"/>
+															</strong>
+														</dt>
+														<xsl:if test="normalize-space(TYPE)">
+															<dd>
+																<strong>Type:</strong>
+																<xsl:value-of select="' '"/>
+																<xsl:value-of select="TYPE"/>
+															</dd>
+														</xsl:if>
+														<xsl:if test="normalize-space(NAME)">
+															<dd>
+																<strong>Name of Performing Group:</strong>
+																<xsl:value-of select="' '"/>
+																<xsl:value-of select="NAME"/>
+															</dd>
+														</xsl:if>
+														<xsl:if test="normalize-space(SPONSOR)">
+															<dd>
+																<strong>Sponsor:</strong>
+																<xsl:value-of select="' '"/>
+																<xsl:value-of select="SPONSOR"/>
+															</dd>
+														</xsl:if>
+														<xsl:if test="normalize-space(LOCATION)">
+															<dd>
+																<strong>Location:</strong>
+																<xsl:value-of select="' '"/>
+																<xsl:value-of select="LOCATION"/>
+															</dd>
+														</xsl:if>
+													</dl>
+												</xsl:if>
+											</xsl:for-each>
+										</li>
+									</xsl:if>
+								</ul>
+							</section>
+						</div>
+					</xsl:when>
+					<xsl:otherwise>
+						<div class="tab-content" style="zoom: 1; display: block; ">
+							<section class="grid-16 alpha">
+							<ul class="ul_in_tab">
+								<li class="research">
+								</li>
+								<xsl:if test="INTELLCONT/CONTYPE[. = 'Book' or . = 'Textbook'] and INTELLCONT/DISPLAY_FLAG = 'Yes'">
+									<li>
+										<h2>Books</h2>                               
+										<dl>
+											<xsl:for-each select="INTELLCONT/CONTYPE[. = 'Book' or . = 'Textbook']">
+												<xsl:if test="../DISPLAY_FLAG = 'Yes'">
+													<dd>
+														<xsl:for-each select="../INTELLCONT_AUTH">
+															<xsl:value-of select="normalize-space(LNAME)"/>                                                        
+															<xsl:if test = "normalize-space(FNAME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(FNAME, 1, 1))"/>.</xsl:if>                                                        
+															<xsl:if test = "normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(MNAME, 1,1))"/>.</xsl:if>
+															<xsl:choose>
+																<xsl:when test="position() = last()-1">, and<xsl:value-of select="' '"/></xsl:when>
+																<xsl:otherwise><xsl:if test="position() != last ()">,</xsl:if><xsl:value-of select="' '"/></xsl:otherwise>
+															</xsl:choose>                                                       
+														</xsl:for-each>
+														<xsl:if test = "normalize-space(../DTY_PUB)">(<xsl:value-of select="normalize-space(../DTY_PUB)"/>).</xsl:if>
+														<xsl:choose>
+																<xsl:when test="normalize-space(../TITLE)"><xsl:value-of select="' '"/><em><xsl:value-of select="normalize-space(../TITLE)"/></em>. </xsl:when>
+																<xsl:when test="normalize-space(../TITLE_SECONDARY)"><xsl:value-of select="' '"/><em><xsl:value-of select="normalize-space(../TITLE_SECONDARY)"/></em>.</xsl:when>
+														</xsl:choose>
+														<xsl:if test = "normalize-space(../PUBCTYST)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../PUBCTYST)"/>:</xsl:if>
+														<xsl:if test = "normalize-space(../PUBLISHER)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../PUBLISHER)"/>.</xsl:if>
+													</dd>
+												</xsl:if>
+											</xsl:for-each>
+										</dl>
+									</li>
+								</xsl:if>
+								<xsl:if test="INTELLCONT/CONTYPE[contains(.,'Book Chapter')] and INTELLCONT/DISPLAY_FLAG = 'Yes'">
+									<li>
+										<h2>Book Chapters</h2>                               
+										<dl>
+											<xsl:for-each select="INTELLCONT/CONTYPE[contains(.,'Book Chapter')]">
+												<xsl:if test="../DISPLAY_FLAG = 'Yes'">
+													<dd>
+														<xsl:for-each select="../INTELLCONT_AUTH">
+															<xsl:value-of select="normalize-space(LNAME)"/>                                                        
+															<xsl:if test = "normalize-space(FNAME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(FNAME, 1, 1))"/>.</xsl:if>                                                        
+															<xsl:if test = "normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(MNAME, 1,1))"/>.</xsl:if>
+															<xsl:choose>
+																<xsl:when test="position() = last()-1">, and<xsl:value-of select="' '"/></xsl:when>
+																<xsl:otherwise><xsl:if test="position() != last()">,</xsl:if><xsl:value-of select="' '"/></xsl:otherwise>
+															</xsl:choose>                                                       
+														</xsl:for-each>
+														<xsl:if test = "normalize-space(../DTY_PUB)"> (<xsl:value-of select="normalize-space(../DTY_PUB)"/>).</xsl:if>
+														<xsl:if test = "normalize-space(../TITLE)"><xsl:value-of select="' '"/><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../TITLE)"/>.</xsl:if>
+														<xsl:if test = "normalize-space(../TITLE_SECONDARY)"> <em><xsl:value-of select="normalize-space(../TITLE_SECONDARY)"/></em></xsl:if>
+														<xsl:if test = "normalize-space(../PAGENUM)"> (pp. <xsl:value-of select="normalize-space(../PAGENUM)"/>)</xsl:if> 
+														<xsl:if test = "normalize-space(../PUBCTYST)">. <xsl:value-of select="normalize-space(../PUBCTYST)"/>:</xsl:if>
+														<xsl:if test = "normalize-space(../PUBLISHER)"><xsl:if test = "not(normalize-space(../PUBCTYST))">.</xsl:if><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../PUBLISHER)"/>.</xsl:if>
+													</dd>
+											   </xsl:if>
+											</xsl:for-each>
+										</dl>
+									</li>
+								</xsl:if>
+								<xsl:if test="INTELLCONT/CONTYPE[contains(.,'Journal Article')] and INTELLCONT/DISPLAY_FLAG = 'Yes'">
+									<li>
+										<h2>Articles</h2>
+										<dl>
+											<xsl:for-each select="INTELLCONT/CONTYPE[contains(.,'Journal Article')]">
+												<xsl:if test="../DISPLAY_FLAG = 'Yes'">
+													<dd>
+														<xsl:for-each select="../INTELLCONT_AUTH">
+															<xsl:value-of select="normalize-space(LNAME)"/>
+															<xsl:if test = "normalize-space(FNAME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(FNAME, 1, 1))"/>.</xsl:if>
+															<xsl:if test = "normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(MNAME, 1,1))"/>.</xsl:if>
+															<xsl:choose>
+																<xsl:when test="position() = last()-1">, and<xsl:value-of select="' '"/></xsl:when>
+																<xsl:otherwise><xsl:if test="position() != last ()">,</xsl:if><xsl:value-of select="' '"/></xsl:otherwise>
+															</xsl:choose> 
+														</xsl:for-each>  
+														<xsl:if test = "normalize-space(../DTY_PUB)"> (<xsl:value-of select="normalize-space(../DTY_PUB)"/>).</xsl:if>
+														<xsl:if test = "normalize-space(../TITLE)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../TITLE)"/>.</xsl:if>                                                 
+														<xsl:if test = "normalize-space(../PUBLISHER)"><xsl:value-of select="' '"/><em><xsl:value-of select="normalize-space(../PUBLISHER)"/></em></xsl:if>                                                     
+														<xsl:if test = "normalize-space(../VOLUME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../VOLUME)"/><xsl:if test = "not(normalize-space(../ISSUE))">,</xsl:if></xsl:if> 
+														<xsl:if test = "normalize-space(../ISSUE)"> (<xsl:value-of select="normalize-space(../ISSUE)"/>),</xsl:if>
+														<xsl:if test = "normalize-space(../PAGENUM)"> (pp. <xsl:value-of select="normalize-space(../PAGENUM)"/>).</xsl:if>
+													</dd>
+												</xsl:if>
+											</xsl:for-each>
+										</dl>
+									</li>
+								</xsl:if>
+								<xsl:if test="INTELLCONT/CONTYPE[contains(.,'Conference Proce')] and INTELLCONT/DISPLAY_FLAG = 'Yes' and INTELLCONT/STATUS = 'Published'">
+									<li>
+										<h2>Conference Proceeding</h2>
+										<dl>
+											<xsl:for-each select="INTELLCONT/CONTYPE[contains(.,'Conference Proce')]">
+												<xsl:if test="../DISPLAY_FLAG = 'Yes' and ../STATUS = 'Published'">
+													<dd>
+														<xsl:for-each select="../INTELLCONT_AUTH">
+															<xsl:value-of select="normalize-space(LNAME)"/>
+															<xsl:if test = "normalize-space(FNAME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(FNAME, 1, 1))"/>.</xsl:if>
+															<xsl:if test = "normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(MNAME, 1,1))"/>.</xsl:if>
+															<xsl:choose>
+																<xsl:when test="position() = last()-1">, and<xsl:value-of select="' '"/></xsl:when>
+																<xsl:otherwise><xsl:if test="position() != last ()">,</xsl:if><xsl:value-of select="' '"/></xsl:otherwise>
+															</xsl:choose> 
+														</xsl:for-each>  
+														<xsl:if test = "normalize-space(../DTY_PUB)"> (<xsl:value-of select="normalize-space(../DTY_PUB)"/>).</xsl:if>
+														<xsl:if test = "normalize-space(../TITLE)"><xsl:value-of select="' '"/><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../TITLE)"/>.</xsl:if>
+														<xsl:if test = "normalize-space(../EDITORS)"><xsl:value-of select="' '"/><xsl:value-of select="'In '"/><xsl:value-of select="normalize-space(../EDITORS)"/> (Ed.)</xsl:if>
+														<xsl:if test = "normalize-space(../TITLE_SECONDARY)"> <xsl:value-of select="' ,'"/><em><xsl:value-of select="normalize-space(../TITLE_SECONDARY)"/></em></xsl:if>
+														<xsl:if test = "normalize-space(../PAGENUM)"> (pp. <xsl:value-of select="normalize-space(../PAGENUM)"/>)</xsl:if> 
+														<xsl:if test = "normalize-space(../PUBCTYST)">. <xsl:value-of select="normalize-space(../PUBCTYST)"/>:</xsl:if>
+														<xsl:if test = "normalize-space(../PUBLISHER)"><xsl:if test = "not(normalize-space(../PUBCTYST))">.</xsl:if><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(../PUBLISHER)"/>.</xsl:if>
+														<xsl:if test = "normalize-space(../DOI)"><xsl:if test = "not(normalize-space(../PUBLISHER))">.</xsl:if><xsl:value-of select="' doi:'"/><xsl:value-of select="normalize-space(../DOI)"/></xsl:if>
+													</dd>
+												</xsl:if>
+											</xsl:for-each>
+										</dl>
+									</li>
+								</xsl:if>
+								<xsl:if test="PRESENT/DISPLAY_FLAG = 'Yes'">
+									<li class="fas_presentations">
+										<h2>Presentations</h2>
+                                                                                <dl>
+										<xsl:for-each select="PRESENT">
+											<xsl:if test="DISPLAY_FLAG = 'Yes'">
+                                                                                            <dd>
+												<xsl:for-each select="PRESENT_AUTH">
+														<xsl:value-of select="normalize-space(LNAME)"/>
+														<xsl:if test = "normalize-space(FNAME)">,<xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(FNAME, 1, 1))"/>.</xsl:if>
+														<xsl:if test = "normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="normalize-space(substring(MNAME, 1,1))"/>.</xsl:if>
+														<xsl:choose>
+															<xsl:when test="position() = last()-1">, and<xsl:value-of select="' '"/></xsl:when>
+															<xsl:otherwise><xsl:if test="position() != last ()">,</xsl:if><xsl:value-of select="' '"/></xsl:otherwise>
+														</xsl:choose> 
+												</xsl:for-each>
+												<xsl:if test = "normalize-space(DTY_DATE)"> (<xsl:if test="normalize-space(DTM_DATE)"><xsl:value-of select="DTM_DATE"/><xsl:if test="normalize-space(DTD_DATE)"><xsl:value-of select="' '"/><xsl:value-of select="DTD_DATE"/></xsl:if>,<xsl:value-of select="' '"/></xsl:if><xsl:value-of select="DTY_DATE"/>).</xsl:if>
+												<xsl:value-of select="' '"/>
+												<xsl:value-of select="TITLE"/> 
+												<xsl:value-of select="' '"/>
+                                                                                                <xsl:if test = "normalize-space(NAME)">
+                                                                                                    <xsl:value-of select="PRESENTATION_TYPE"/> presented at
+                                                                                                    <xsl:value-of select="NAME"/>
+                                                                                                </xsl:if>
+												<xsl:if test="normalize-space(LOCATION)">
+													,<xsl:value-of select="' '"/>
+													<xsl:value-of select="LOCATION"/>
+												</xsl:if>.
+                                                                                            </dd>
+											</xsl:if>
+										</xsl:for-each>
+                                                                                </dl>
+									</li>
+								</xsl:if>
+								<xsl:if test="PERFORM_EXHIBIT/DISPLAY_FLAG = 'Yes'">
+										<li class="fas_perform">
+											<h2>Artistic and Professional Performances and Exhibits</h2>
+											<xsl:for-each select="PERFORM_EXHIBIT">
+												<xsl:if test="DISPLAY_FLAG = 'Yes'">
+													<dl>
+														<dt>
+															<strong>
+																<xsl:value-of select="TITLE"/>
+															</strong>
+														</dt>
+														<xsl:if test="normalize-space(TYPE)">
+															<dd>
+																<strong>Type:</strong>
+																<xsl:value-of select="' '"/>
+																<xsl:value-of select="TYPE"/>
+															</dd>
+														</xsl:if>
+														<xsl:if test="normalize-space(NAME)">
+															<dd>
+																<strong>Name of Performing Group:</strong>
+																<xsl:value-of select="' '"/>
+																<xsl:value-of select="NAME"/>
+															</dd>
+														</xsl:if>
+														<xsl:if test="normalize-space(SPONSOR)">
+															<dd>
+																<strong>Sponsor:</strong>
+																<xsl:value-of select="' '"/>
+																<xsl:value-of select="SPONSOR"/>
+															</dd>
+														</xsl:if>
+														<xsl:if test="normalize-space(LOCATION)">
+															<dd>
+																<strong>Location:</strong>
+																<xsl:value-of select="' '"/>
+																<xsl:value-of select="LOCATION"/>
+															</dd>
+														</xsl:if>
+													</dl>
+												</xsl:if>
+											</xsl:for-each>
+										</li>
+									</xsl:if>
+								</ul>
+							</section>
+						</div>
+					</xsl:otherwise>
+                    </xsl:choose>    
+                </xsl:if>
+                </xsl:if>
+                <xsl:if test="AWARDHONOR/DISPLAY_FLAG = 'Yes'">
+                    <div class="tab-content">
+                        <section class="grid-16 alpha omega">
+                            <ul class="ul_in_tab">
+                                <xsl:for-each select="AWARDHONOR">
+                                    <xsl:if test="DISPLAY_FLAG = 'Yes'">
+                                        <li>
+                                            <xsl:if test="normalize-space(DTY_DATE)"><xsl:value-of select="DTY_DATE"/>:<xsl:value-of select=" ' ' " /></xsl:if>   
+                                            <xsl:value-of select="NAME"/>
+                                            <xsl:if test="normalize-space(ORG)">,<xsl:value-of select=" ' ' " /><xsl:value-of select="ORG"/></xsl:if>
+                                        </li>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </ul>
+                        </section>
+                    </div>
+                </xsl:if>
+                <xsl:if test="CONGRANT/DISPLAY_FLAG = 'Yes' or INTELLPROP/DISPLAY_FLAG = 'Yes'">
+                    <div class="tab-content">
+                        <section class="grid-16 alpha omega">
+                            <ul class="ul_in_tab">
+                                <!--<xsl:if test="RESPROG">
+                                    <li>
+                                <xsl:for-each select="RESPROG">
+
+
+                                        <h3><strong><xsl:value-of select="TITLE"/></strong></h3>
+                                        <p><xsl:value-of select="DESC"/></p>
+                                        <dl>
+                                            <dt>Collaborators</dt>
+                                            <xsl:for-each select="RESPROG_COLL">
+                                                <dd>
+
+                                                    <xsl:value-of select="NAME"/>
+
+
+                                                </dd>
+                                            </xsl:for-each>
+
+                                        </dl>
+
+
+                                    </xsl:for-each>
+                                    </li>
+                                </xsl:if>-->
+                                <xsl:if test="normalize-space(CONGRANT)">                                   
+                                    <li class="fas_grants">
+                                        <h2>Contracts, Grants and Sponsored Research</h2>
+                                        <dl>
+                                        <xsl:for-each select="CONGRANT">
+                                            <xsl:if test="DISPLAY_FLAG = 'Yes' and (STATUS = 'Funded' or normalize-space(DTY_START))">
+                                                <dd>
+                                                    <xsl:for-each select="CONGRANT_INVEST">
+                                                        <xsl:value-of select="LNAME"/>,<xsl:if test="normalize-space(FNAME)"><xsl:value-of select="' '"/><xsl:value-of select="substring(FNAME, 1, 1)"/>.</xsl:if><xsl:if test="normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="substring(MNAME, 1,1)"/>.</xsl:if><xsl:if test="position() != last ()"><xsl:value-of select="'; '"/></xsl:if>
+                                                    </xsl:for-each>
+                                                    <xsl:value-of select="' &quot;'"/><xsl:value-of select="TITLE"/><xsl:value-of select="'&quot; '"/>
+                                                    <xsl:if test="normalize-space(AMOUNT)"><xsl:value-of select="'$'"/><xsl:value-of select="format-number(AMOUNT, '#,###')"/></xsl:if>
+                                                    <xsl:if test="normalize-space(AWARDORG)"><xsl:value-of select="'. '"/><xsl:value-of select="AWARDORG"/></xsl:if>
+                                                    <xsl:value-of select="'. '"/>
+                                                    <xsl:if test="normalize-space(DTM_START)"><xsl:value-of select="DTM_START"/><xsl:if test="normalize-space(DTD_START)"><xsl:value-of select="' '"/><xsl:value-of select="DTD_START"/></xsl:if>,<xsl:value-of select="' '"/></xsl:if><xsl:value-of select="DTY_START"/>
+                                                    <xsl:if test="normalize-space(DTY_END)">
+                                                        <xsl:value-of select="' - '"/>
+                                                        <xsl:if test="normalize-space(DTM_END)"><xsl:value-of select="DTM_END"/><xsl:if test="normalize-space(DTD_END)"><xsl:value-of select="' '"/><xsl:value-of select="DTD_END"/></xsl:if>,<xsl:value-of select="' '"/></xsl:if><xsl:value-of select="DTY_END"/>
+                                                    </xsl:if>
+                                                </dd>
+                                            </xsl:if>
+                                        </xsl:for-each>
+                                        </dl>
+                                    </li>
+                                </xsl:if>	
+                                <xsl:if test="normalize-space(INTELLPROP)">
+                                    <li class="fas_intellect">
+                                        <h2>Intellectual Property</h2>
+                                        <xsl:for-each select="INTELLPROP">
+                                            <xsl:if test="DISPLAY_FLAG = 'Yes'">
+                                                <dl>
+                                                    <dt>
+                                                        <strong>
+                                                            <xsl:value-of select="TITLE"/>
+                                                        </strong>
+                                                    </dt>
+                                                    <xsl:if test="normalize-space(FORMAT)">
+                                                        <dd>
+                                                            <strong>Patent/Copyright:</strong>
+                                                            <xsl:value-of select="' '"/>
+                                                            <xsl:value-of select="FORMAT"/>
+                                                        </dd>
+                                                    </xsl:if>
+                                                    <xsl:if test="normalize-space(TYPE)">
+                                                        <dd>
+                                                            <strong>Type:</strong>
+                                                            <xsl:value-of select="' '"/>
+                                                            <xsl:value-of select="TYPE"/>
+                                                        </dd>
+                                                    </xsl:if>
+                                                    <xsl:if test="normalize-space(NATIONALITY)">
+                                                        <dd>
+                                                            <strong>Patent Nationality:</strong>
+                                                            <xsl:value-of select="' '"/>
+                                                            <xsl:value-of select="NATIONALITY"/>
+                                                        </dd>
+                                                    </xsl:if>
+                                                    <xsl:if test="normalize-space(NATIONS)">
+                                                        <dd>
+                                                            <strong>Cooperation Treaty:</strong>
+                                                            <xsl:value-of select="' '"/>
+                                                            <xsl:value-of select="NATIONS"/>
+                                                        </dd>
+                                                    </xsl:if>
+                                                    <xsl:if test="normalize-space(INTELLPROP_INVENT)">
+                                                        <dd>
+                                                            <strong>Inventors:</strong> 
+                                                            <br/>
+                                                            <xsl:for-each select="INTELLPROP_INVENT">
+                                                                <xsl:value-of select="LNAME"/>,
+                                                                <xsl:if test="normalize-space(FNAME)"><xsl:value-of select="' '"/><xsl:value-of select="substring(FNAME, 1, 1)"/>.</xsl:if>
+                                                                <xsl:if test="normalize-space(MNAME)"><xsl:value-of select="' '"/><xsl:value-of select="substring(MNAME, 1,1)"/>.</xsl:if>
+                                                                <br/>
+                                                            </xsl:for-each>
+                                                        </dd>
+                                                    </xsl:if>     
+                                                </dl>
+                                            </xsl:if>
+                                        </xsl:for-each>
+
+                                    </li>
+                                </xsl:if>
+                            </ul>
+                        </section>
+                    </div>
+                 </xsl:if>
+            </div>
+        </section>
+	</xsl:if>  
+    </xsl:template>
+</xsl:stylesheet>

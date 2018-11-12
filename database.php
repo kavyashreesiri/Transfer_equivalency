@@ -1,16 +1,16 @@
 <?php
 $dbstr = "(description=
                (address=
-                 (host=scooby.pprd.odu.edu)
+                 (host=)
                  (protocol=tcp)
-                 (port=2336)
+                 (port=)
               )
              (connect_data=
                  (sid=PPRD)
                  (SERVER=DEDICATED)
                )";
 
-$conn = oci_connect('ODUAPIUSER','oduapiuserforCourseSearch2018','(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = scooby.pprd.odu.edu)(PORT = 2336)) (CONNECT_DATA = (SERVER = DEDICATED) (SID = PPRD)))');
+$conn = oci_connect('','','(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = )(PORT = )) (CONNECT_DATA = (SERVER = DEDICATED) (SID = PPRD)))');
 ini_set('memory_limit', '512M');
 
 if (!$conn) {
